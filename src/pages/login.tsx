@@ -15,10 +15,15 @@ const LoginPage: NextPage = () => {
         </Link>
       </Header>
       <Form>
-        <div>아이디</div>
-        <TextInput type='text' />
-        <div>비밀번호</div>
-        <TextInput type='password' />
+        <InputBox>
+          <Label htmlFor='userId'>아이디</Label>
+          <TextInput id='userId' type='text' autoComplete='false' />
+          <ErrorText></ErrorText>
+        </InputBox>
+        <InputBox>
+          <Label htmlFor='password'>비밀번호</Label>
+          <TextInput id='password' type='password' />
+        </InputBox>
         <LoginButton disabled>로그인</LoginButton>
       </Form>
     </>
@@ -41,12 +46,38 @@ const Title = styled.a`
 const Form = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 16px;
   margin-top: 40px;
   padding: 0 20px 40px;
 `;
 
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.label`
+  font-weight: 700;
+  font-size: 13px;
+  color: #6c6c7d;
+`;
+
 const TextInput = styled.input`
-  border: 1px solid #000;
+  margin-top: 8px;
+  padding: 16px;
+  background-color: #f7f7fa;
+  border-radius: 12px;
+  border: none;
+  &.error {
+    background-color: #fdedee;
+  }
+`;
+
+const ErrorText = styled.p`
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 13px;
+  color: #ed4e5c;
 `;
 
 const LoginButton = styled.button`
