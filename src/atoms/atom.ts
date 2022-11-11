@@ -1,6 +1,24 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 
-export const userDataAtom = atom({
+const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined;
+
+const { persistAtom } = recoilPersist({
+  key: 'data',
+  storage: sessionStorage,
+});
+
+interface IUserData {
+  data: {
+    accessToken: string;
+    user: {
+      ID: string;
+      NAME: string;
+    };
+  };
+}
+
+export const userDataAtom = atom<IUserData>({
   key: 'userData',
   default: {
     data: {
@@ -11,4 +29,5 @@ export const userDataAtom = atom({
       },
     },
   },
+  effects_UNSTABLE: [persistAtom],
 });

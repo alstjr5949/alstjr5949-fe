@@ -1,10 +1,9 @@
 import axios from 'axios';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { useQuery } from 'react-query';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { userDataAtom } from '../atoms/atom';
 
 interface IUser {
   data: {
@@ -15,18 +14,31 @@ interface IUser {
   };
 }
 
-const Header = () => {
-  const user = useRecoilValue(userDataAtom);
+const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined;
 
-  const userID = user.data.user.ID;
+const Header = () => {
+  const router = useRouter();
+
+  const userSessionData = sessionStorage ? sessionStorage.getItem('data') : '';
+  const userSessionDataJSON = userSessionData
+    ? JSON.parse(userSessionData ? userSessionData : '')
+    : '';
+
+  const userID = userSessionDataJSON ? userSessionDataJSON.userData['data']['user']['ID'] : '';
 
   const getUserData = async (userID: string) => {
     try {
       const res = await axios.get(`/users/${userID}`);
       return res.data;
-    } catch (error) {
-      console.log(error);
+    } catch (error) {}
+  };
+
+  const logoutButtonClick = () => {
+    if (sessionStorage) {
+      sessionStorage.removeItem('data');
+      router.push('/');
     }
+    return;
   };
 
   const { isLoading, data: userData } = useQuery<IUser>(['userID', userID], () =>
@@ -46,7 +58,9 @@ const Header = () => {
               <Link href='/'>
                 <AnchorText>{userData.data.user.NAME}</AnchorText>
               </Link>
-              <LogoutBtn type='button'>logout</LogoutBtn>
+              <LogoutBtn type='button' onClick={logoutButtonClick}>
+                logout
+              </LogoutBtn>
             </LoginLogoutButtonCont>
           ) : (
             <Link href='/login'>
@@ -83,4 +97,6 @@ const AnchorText = styled.a`
   cursor: pointer;
 `;
 
-const LogoutBtn = styled.button``;
+const LogoutBtn = styled.button`
+  cursor: pointer;
+`;
