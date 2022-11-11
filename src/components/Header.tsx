@@ -97,6 +97,4 @@ const AnchorText = styled.a`
   cursor: pointer;
 `;
 
-const LogoutBtn = styled.button`
-  cursor: pointer;
-`;
+const LogoutBtn = styled.button``;

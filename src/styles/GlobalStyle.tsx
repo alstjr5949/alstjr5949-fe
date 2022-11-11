@@ -36,6 +36,7 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 0;
     background: none;
     user-select: none;
+    cursor: pointer;
   }
 
   ul, ol {
