@@ -14,10 +14,12 @@ interface ILoginForm {
   password: string;
 }
 
-const LoginPage: NextPage = () => {
-  const setUserData = useSetRecoilState(userDataAtom);
+const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined;
 
+const LoginPage: NextPage = () => {
   const router = useRouter();
+
+  const setUserData = useSetRecoilState(userDataAtom);
 
   const {
     register,
@@ -43,6 +45,18 @@ const LoginPage: NextPage = () => {
   const onInvalid = (errors: FieldErrors) => {
     console.log(errors);
   };
+
+  // 로그인시 홈으로 redirect
+  const userSessionData = sessionStorage ? sessionStorage.getItem('data') : '';
+  const userSessionDataJSON = userSessionData
+    ? JSON.parse(userSessionData ? userSessionData : '')
+    : '';
+
+  const userToken = userSessionDataJSON ? userSessionDataJSON.userData['data']['accessToken'] : '';
+
+  if (userToken) {
+    router.push('/');
+  }
 
   return (
     <>
