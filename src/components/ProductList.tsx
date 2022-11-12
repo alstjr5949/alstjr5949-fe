@@ -4,12 +4,12 @@ import { Product } from '../types/product';
 import ProductItem from './ProductItem';
 
 type ProductListProps = {
-  products: Product[];
+  products: Product[] | undefined;
 };
 
 const ProductList = ({ products }: ProductListProps) => (
   <Container>
-    {products.map((product) => (
+    {products?.map((product) => (
       <ProductItem key={product.id} product={product} />
     ))}
   </Container>
@@ -17,7 +17,7 @@ const ProductList = ({ products }: ProductListProps) => (
 
 export default ProductList;
 
-const Container = styled.div`
+const Container = styled.ul`
   display: flex;
   flex-wrap: wrap;
   width: 400px;
