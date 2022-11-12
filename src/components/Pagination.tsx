@@ -1,21 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
+import usePagination from '../hooks/usePagination';
+import { useRouter } from 'next/router';
 
 const Pagination = () => {
+  const router = useRouter();
+  const { page } = router.query;
+
+  const { pageNumArr, prevButtonClick, pageButtonClick, nextButtonClick } = usePagination();
+
   return (
     <Container>
-      <Button disabled>
+      <Button onClick={prevButtonClick} disabled={page === '1' ? true : false}>
         <VscChevronLeft />
       </Button>
       <PageWrapper>
-        {[1, 2, 3, 4, 5].map((page) => (
-          <Page key={page} selected={page === 1} disabled={page === 1}>
-            {page}
+        {pageNumArr.map((pageNum) => (
+          <Page
+            onClick={() => pageButtonClick(pageNum)}
+            key={pageNum}
+            selected={pageNum === Number(page)}
+            disabled={pageNum === Number(page)}
+          >
+            {pageNum}
           </Page>
         ))}
       </PageWrapper>
-      <Button disabled={false}>
+      <Button onClick={nextButtonClick} disabled={page === '11' ? true : false}>
         <VscChevronRight />
       </Button>
     </Container>
