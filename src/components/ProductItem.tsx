@@ -2,6 +2,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Product } from '../types/product';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { commaizeNumber } from '../utilities';
 
 type ProductItemProps = {
@@ -11,7 +12,7 @@ type ProductItemProps = {
 const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemProps) => (
   <Link href={`/products/${id}`}>
     <Container>
-      <Thumbnail src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
+      <LazyLoadImage src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
       <Name>{name}</Name>
       <Price>{commaizeNumber(price)}</Price>
     </Container>
@@ -25,11 +26,10 @@ const Container = styled.a`
   margin-left: 20px;
   margin-top: 20px;
   cursor: pointer;
-`;
-
-const Thumbnail = styled.img`
-  width: 100%;
-  height: 180px;
+  & img {
+    width: 100%;
+    height: 180px;
+  }
 `;
 
 const Name = styled.div`
