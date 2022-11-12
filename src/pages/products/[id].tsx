@@ -3,20 +3,46 @@ import type { NextPage } from 'next';
 import React from 'react';
 import styled from 'styled-components';
 
-import products from '../../api/data/products.json';
 import Header from '../../components/Header';
+import { commaizeNumber } from '../../utilities';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
 
 const ProductDetailPage: NextPage = () => {
-  const product = products[0];
+  const router = useRouter();
+  const { id } = router.query;
 
+  const getProductDetail = async () => {
+    try {
+      const productData = await axios.get(`/products/${id}`);
+      return productData.data.data;
+    } catch (error) {}
+  };
+
+  const { data: productDetail } = useQuery('productDatail', getProductDetail);
+
+  console.log(productDetail);
   return (
     <>
       <Header />
-      <Thumbnail src={product.thumbnail ? product.thumbnail : '/defaultThumbnail.jpg'} />
-      <ProductInfoWrapper>
-        <Name>{product.name}</Name>
-        <Price>{product.price}원</Price>
-      </ProductInfoWrapper>
+      {productDetail ? (
+        <>
+          <Thumbnail
+            src={
+              productDetail.product.thumbnail
+                ? productDetail.product.thumbnail
+                : '/defaultThumbnail.jpg'
+            }
+          />
+          <ProductInfoWrapper>
+            <Name>{productDetail.product.name}</Name>
+            <Price>{commaizeNumber(productDetail.product.price)}원</Price>
+          </ProductInfoWrapper>
+        </>
+      ) : (
+        <Wrapper>존재하지 않는 상품입니다.</Wrapper>
+      )}
     </>
   );
 };
@@ -41,4 +67,11 @@ const Name = styled.div`
 const Price = styled.div`
   font-size: 18px;
   margin-top: 8px;
+`;
+
+const Wrapper = styled.div`
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
