@@ -8,21 +8,26 @@ import { commaizeNumber } from '../../utilities';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
+import { Product } from '../../types/product';
+
+interface IProductDetail {
+  product: Product;
+}
 
 const ProductDetailPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const getProductDetail = async () => {
+  const getProductDetail = async (id: string | string[] | undefined) => {
     try {
       const productData = await axios.get(`/products/${id}`);
       return productData.data.data;
     } catch (error) {}
   };
 
-  const { data: productDetail } = useQuery('productDatail', getProductDetail);
-
-  console.log(productDetail);
+  const { data: productDetail } = useQuery<IProductDetail>(['productDatail', id], () =>
+    getProductDetail(id)
+  );
   return (
     <>
       <Header />
