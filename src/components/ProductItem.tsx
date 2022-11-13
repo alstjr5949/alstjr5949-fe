@@ -4,20 +4,24 @@ import styled from 'styled-components';
 import { Product } from '../types/product';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { commaizeNumber } from '../utilities';
+import { useSessionStorage } from 'usehooks-ts';
 
 type ProductItemProps = {
   product: Product;
 };
 
-const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemProps) => (
-  <Link href={`/products/${id}`}>
-    <Container>
-      <LazyLoadImage src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
-      <Name>{name}</Name>
-      <Price>{commaizeNumber(price)}</Price>
-    </Container>
-  </Link>
-);
+const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemProps) => {
+  const [scrollY, setScrollY] = useSessionStorage('scrollY', 0);
+  return (
+    <Link href={`/products/${id}`}>
+      <Container onClick={() => setScrollY(window.scrollY)}>
+        <LazyLoadImage src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
+        <Name>{name}</Name>
+        <Price>{commaizeNumber(price)}</Price>
+      </Container>
+    </Link>
+  );
+};
 
 export default ProductItem;
 

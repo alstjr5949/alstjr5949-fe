@@ -8,9 +8,12 @@ import axios from 'axios';
 import { useInfiniteQuery } from 'react-query';
 import { Product } from '../types/product';
 import { useInView } from 'react-intersection-observer';
+import { useSessionStorage } from 'usehooks-ts';
 
 const InfiniteScrollPage: NextPage = () => {
-  const { ref, inView } = useInView({ threshold: 0.3 });
+  const { ref, inView } = useInView({ threshold: 0.1 });
+
+  const [scrollY, setScrollY] = useSessionStorage('scrollY', 0);
 
   const getInfProductsData = async (page: number) => {
     const res = await axios.get(`/products?page=1&size=${page}`);
@@ -19,14 +22,14 @@ const InfiniteScrollPage: NextPage = () => {
 
   const { data, status, fetchNextPage, hasNextPage } = useInfiniteQuery<Product[] | undefined>(
     'products',
-    async ({ pageParam = 10 }) => {
+    async ({ pageParam = 16 }) => {
       return await getInfProductsData(pageParam);
     },
     {
       getNextPageParam: (lastPage, allPages) => {
-        const maxPage = 11;
+        const maxPage = Math.ceil(105 / 16);
         const nextPage = allPages.length + 1;
-        return nextPage <= maxPage ? nextPage * 10 : undefined;
+        return nextPage <= maxPage ? nextPage * 16 : undefined;
       },
     }
   );
@@ -37,12 +40,16 @@ const InfiniteScrollPage: NextPage = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  useEffect(() => {
+    if (scrollY !== 0) window.scrollTo(0, Number(scrollY));
+  }, [scrollY]);
+
   return (
     <>
       <Header />
       <Container>
         {status === 'success' && <ProductList products={data.pages[data?.pages.length - 1]} />}
-        <div ref={ref}></div>
+        <Trigger ref={ref}></Trigger>
       </Container>
     </>
   );
@@ -56,3 +63,5 @@ const Container = styled.div`
   align-items: center;
   padding: 0 20px 40px;
 `;
+
+const Trigger = styled.div``;
