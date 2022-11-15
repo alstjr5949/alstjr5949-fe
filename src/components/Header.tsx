@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
 
+import { getUserData } from '../api/api';
 import styled from 'styled-components';
 import { useSessionStorage } from 'usehooks-ts';
 
@@ -17,20 +17,10 @@ interface IUser {
 }
 
 const Header = () => {
-  const router = useRouter();
-
   const [userID, setUserID] = useSessionStorage('userID', '');
-
-  const getUserData = async (userID: string) => {
-    try {
-      const res = await axios.get(`/users/${userID}`);
-      return res.data;
-    } catch (error) {}
-  };
 
   const logoutButtonClick = () => {
     setUserID('');
-    router.push('/');
     return;
   };
 

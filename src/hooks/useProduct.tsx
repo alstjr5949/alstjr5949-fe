@@ -1,7 +1,8 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+
+import { getProductsData } from '../api/api';
 import { Product } from '../types/product';
 
 interface IProducts {
@@ -17,15 +18,8 @@ const useProduct = () => {
 
   const [totalProductNum, setTotalProductNum] = useState<number>(0);
 
-  const getProductData = async (pageNum: string | string[] | undefined, size?: number) => {
-    try {
-      const res = await axios.get(`/products?page=${pageNum}&size=${size}`);
-      return res.data;
-    } catch (error) {}
-  };
-
   const { data: productData } = useQuery<IProducts>(['productData', page], () =>
-    getProductData(page ? page : undefined, 10)
+    getProductsData(page ? page : undefined, 10)
   );
 
   useEffect(() => {

@@ -1,12 +1,13 @@
-import Link from 'next/link';
+import axios from 'axios';
 import type { NextPage } from 'next';
 import React from 'react';
-import styled from 'styled-components';
-import { FieldErrors, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import axios from 'axios';
-import Header from '../components/Header';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { useSessionStorage } from 'usehooks-ts';
+
+import Header from '../components/Header';
+
+import styled from 'styled-components';
 
 interface ILoginForm {
   userId: string;
@@ -27,16 +28,12 @@ const LoginPage: NextPage = () => {
   });
 
   const onValid = async (data: ILoginForm) => {
-    try {
-      const res = await axios.post('/login', {
-        id: data.userId,
-        password: data.password,
-      });
-      setUserID(res.data.data.user.ID);
-      router.push('/');
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await axios.post('/login', {
+      id: data.userId,
+      password: data.password,
+    });
+    setUserID(res.data.data.user.ID);
+    router.push('/');
   };
 
   const onInvalid = (errors: FieldErrors) => {
