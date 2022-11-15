@@ -4,11 +4,20 @@ import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 import usePagination from '../hooks/usePagination';
 import { useRouter } from 'next/router';
 
-const Pagination = () => {
+interface PaginationProps {
+  productNum: number;
+}
+
+const Pagination = ({ productNum }: PaginationProps) => {
   const router = useRouter();
   const { page } = router.query;
 
-  const { pageNumArr, prevButtonClick, pageButtonClick, nextButtonClick } = usePagination();
+  const pageLimit = 5;
+
+  const { pageNumArr, totalPage, prevButtonClick, pageButtonClick, nextButtonClick } =
+    usePagination(productNum, pageLimit);
+
+  console.log(pageNumArr);
 
   return (
     <Container>
@@ -27,7 +36,7 @@ const Pagination = () => {
           </Page>
         ))}
       </PageWrapper>
-      <Button onClick={nextButtonClick} disabled={page === '11' ? true : false}>
+      <Button onClick={nextButtonClick} disabled={page === `${totalPage}` ? true : false}>
         <VscChevronRight />
       </Button>
     </Container>

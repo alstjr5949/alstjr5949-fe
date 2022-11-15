@@ -14,7 +14,7 @@ const ProductItem = ({ product: { id, name, thumbnail, price } }: ProductItemPro
   const [scrollY, setScrollY] = useSessionStorage('scrollY', 0);
   return (
     <Link href={`/products/${id}`}>
-      <Container onClick={() => setScrollY(window.scrollY)}>
+      <Container onClick={() => setScrollY(window.pageYOffset)}>
         <LazyLoadImage src={thumbnail ? thumbnail : '/defaultThumbnail.jpg'} />
         <Name>{name}</Name>
         <Price>{commaizeNumber(price)}</Price>

@@ -1,17 +1,21 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Product } from '../types/product';
 
 interface IProducts {
   data: {
     products: Product[];
+    totalCount: number;
   };
 }
 
 const useProduct = () => {
   const router = useRouter();
   const { page } = router.query;
+
+  const [totalProductNum, setTotalProductNum] = useState<number>(0);
 
   const getProductData = async (pageNum: string | string[] | undefined, size?: number) => {
     try {
@@ -24,7 +28,11 @@ const useProduct = () => {
     getProductData(page ? page : undefined, 10)
   );
 
-  return { productData };
+  useEffect(() => {
+    setTotalProductNum(productData ? productData.data.totalCount : 0);
+  }, [productData]);
+
+  return { productData, totalProductNum };
 };
 
 export default useProduct;
