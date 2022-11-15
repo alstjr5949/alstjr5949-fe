@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 import styled from 'styled-components';
 
 import { Product } from '../types/product';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 import { commaizeNumber } from '../utilities';
+
 import { useSessionStorage } from 'usehooks-ts';
 
 type ProductItemProps = {

@@ -1,11 +1,12 @@
-import axios from 'axios';
 import Link from 'next/link';
 import React from 'react';
 import { useQuery } from 'react-query';
 
-import { getUserData } from '../api/api';
-import styled from 'styled-components';
 import { useSessionStorage } from 'usehooks-ts';
+
+import { getUserData } from '../api/api';
+
+import styled from 'styled-components';
 
 interface IUser {
   data: {

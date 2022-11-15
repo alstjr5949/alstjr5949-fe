@@ -1,10 +1,12 @@
 import type { NextPage } from 'next';
 import React from 'react';
-import styled from 'styled-components';
 
 import ProductList from '../components/ProductList';
 import Pagination from '../components/Pagination';
 import Header from '../components/Header';
+
+import styled from 'styled-components';
+
 import useProduct from '../hooks/useProduct';
 
 const PaginationPage: NextPage = () => {

@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import type { NextPage } from 'next';
 import React from 'react';
-import styled from 'styled-components';
+
 import Header from '../components/Header';
+
+import styled from 'styled-components';
 
 const HomePage: NextPage = () => {
   return (

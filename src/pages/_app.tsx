@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+
 import styled from 'styled-components';
+import GlobalStyle from '../styles/GlobalStyle';
 
 import setupMSW from '../api/setup';
-import GlobalStyle from '../styles/GlobalStyle';
 
 setupMSW();
 

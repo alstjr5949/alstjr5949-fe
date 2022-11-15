@@ -1,15 +1,17 @@
 import type { NextPage } from 'next';
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import { useInfiniteQuery } from 'react-query';
+import { useInView } from 'react-intersection-observer';
 
 import ProductList from '../components/ProductList';
 import Header from '../components/Header';
-import axios from 'axios';
-import { useInfiniteQuery } from 'react-query';
+
+import styled from 'styled-components';
 import { Product } from '../types/product';
-import { useInView } from 'react-intersection-observer';
-import { useSessionStorage } from 'usehooks-ts';
+
 import { getInfProductsData } from '../api/api';
+
+import { useSessionStorage } from 'usehooks-ts';
 
 const InfiniteScrollPage: NextPage = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });

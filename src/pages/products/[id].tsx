@@ -1,14 +1,16 @@
-import Link from 'next/link';
+import axios from 'axios';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import React from 'react';
-import styled from 'styled-components';
+import { useQuery } from 'react-query';
 
 import Header from '../../components/Header';
-import { commaizeNumber } from '../../utilities';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+
+import styled from 'styled-components';
+
 import { Product } from '../../types/product';
+
+import { commaizeNumber } from '../../utilities';
 
 interface IProductDetail {
   product: Product;
