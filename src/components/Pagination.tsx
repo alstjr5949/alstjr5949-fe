@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
-import usePagination from '../hooks/usePagination';
 import { useRouter } from 'next/router';
+
+import usePagination from '../hooks/usePagination';
+
+import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc';
 
 interface PaginationProps {
   productNum: number;
@@ -16,8 +18,6 @@ const Pagination = ({ productNum }: PaginationProps) => {
 
   const { pageNumArr, totalPage, prevButtonClick, pageButtonClick, nextButtonClick } =
     usePagination(productNum, pageLimit);
-
-  console.log(pageNumArr);
 
   return (
     <Container>
