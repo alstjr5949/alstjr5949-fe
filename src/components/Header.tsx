@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useQuery } from 'react-query';
+
 import styled from 'styled-components';
+import { useSessionStorage } from 'usehooks-ts';
 
 interface IUser {
   data: {
@@ -14,17 +16,10 @@ interface IUser {
   };
 }
 
-const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined;
-
 const Header = () => {
   const router = useRouter();
 
-  const userSessionData = sessionStorage ? sessionStorage.getItem('data') : '';
-  const userSessionDataJSON = userSessionData
-    ? JSON.parse(userSessionData ? userSessionData : '')
-    : '';
-
-  const userID = userSessionDataJSON ? userSessionDataJSON.userData['data']['user']['ID'] : '';
+  const [userID, setUserID] = useSessionStorage('userID', '');
 
   const getUserData = async (userID: string) => {
     try {
@@ -34,10 +29,8 @@ const Header = () => {
   };
 
   const logoutButtonClick = () => {
-    if (sessionStorage) {
-      sessionStorage.removeItem('data');
-      router.push('/');
-    }
+    setUserID('');
+    router.push('/');
     return;
   };
 

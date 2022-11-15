@@ -5,21 +5,18 @@ import styled from 'styled-components';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { useSetRecoilState } from 'recoil';
-import { userDataAtom } from '../atoms/atom';
 import Header from '../components/Header';
+import { useSessionStorage } from 'usehooks-ts';
 
 interface ILoginForm {
   userId: string;
   password: string;
 }
 
-const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage : undefined;
-
 const LoginPage: NextPage = () => {
   const router = useRouter();
 
-  const setUserData = useSetRecoilState(userDataAtom);
+  const [userID, setUserID] = useSessionStorage('userID', '');
 
   const {
     register,
@@ -35,7 +32,7 @@ const LoginPage: NextPage = () => {
         id: data.userId,
         password: data.password,
       });
-      setUserData(res.data);
+      setUserID(res.data.data.user.ID);
       router.push('/');
     } catch (error) {
       console.log(error);
@@ -46,15 +43,8 @@ const LoginPage: NextPage = () => {
     console.log(errors);
   };
 
-  // 로그인시 홈으로 redirect
-  const userSessionData = sessionStorage ? sessionStorage.getItem('data') : '';
-  const userSessionDataJSON = userSessionData
-    ? JSON.parse(userSessionData ? userSessionData : '')
-    : '';
-
-  const userToken = userSessionDataJSON ? userSessionDataJSON.userData['data']['accessToken'] : '';
-
-  if (userToken) {
+  // 로그인시 Home으로 redirect
+  if (userID !== '') {
     router.push('/');
   }
 
