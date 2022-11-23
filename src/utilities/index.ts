@@ -11,3 +11,7 @@ export const parseQueryString = (search: string): Record<string, string> =>
 
       return acc;
     }, {} as Record<string, string>);
+
+export const commaizeNumber = (value: string | number) => {
+  return value.toLocaleString('ko-KR');
+};
